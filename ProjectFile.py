@@ -2,8 +2,9 @@ __author__ = 'snow'
 
 
 import sqlite3
+from datetime import date, datetime
 
-db_connection=sqlite3.connect("PENGUIN.db")
+db_connection=sqlite3.connect("FLAPPY.db",detect_types=sqlite3.PARSE_DECLTYPES|sqlite3.PARSE_COLNAMES)
 db_cursor=db_connection.cursor()
 
 try:
@@ -14,7 +15,7 @@ except sqlite3.OperationalError:
     print(" Client table not created")
 
 try:
-    db_connection.execute("CREATE TABLE IF NOT EXISTS Orders(ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL ,Client_id INTEGER NOT NULL,Product TEXT ,Weight INTEGER,date_time DATETIME)")
+    db_connection.execute("CREATE TABLE IF NOT EXISTS Orders(ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL ,Client_id INTEGER NOT NULL,Product TEXT ,Weight INTEGER,date_time DATE)")
     db_connection.commit()
     print("table created")
 except sqlite3.OperationalError:
@@ -59,7 +60,28 @@ def Client_list():
 
 
 def Order_create():
-    print("Order Created")
+    try:
+        ids=int(input("Give a Client's ID:"))
+        id_finding=db_cursor.execute("SELECT ID FROM Client WHERE ID=?",(ids,))
+        for i in id_finding:
+            if int(list(i)[0])==ids:
+                print("Good to go")
+                try:
+                    product=input("ProductName:")
+                    weight=int(input("Weight:"))
+                    today=date.today()
+                    db_connection.execute("INSERT INTO Orders(Client_id,Product,Weight,date_time) VALUES (?,?,?,?);",(ids,product,weight,today))
+                    db_connection.commit()
+                    print("order placed")
+                except sqlite3.OperationalError:
+                    print("Not placed the order")
+
+            else:
+                print("not good to go")
+
+    except sqlite3.OperationalError:
+        print("problems")
+
 
 def Order_list():
     try:
@@ -67,7 +89,7 @@ def Order_list():
         for i in c_list:
             print(list(i))
     except sqlite3.OperationalError:
-        print("Client list not created")
+        print("Order list not created")
 
     menu()
 
