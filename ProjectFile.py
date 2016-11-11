@@ -62,25 +62,101 @@ def Client_list():
 def Order_create():
     try:
         ids=int(input("Give a Client's ID:"))
-        id_finding=db_cursor.execute("SELECT ID FROM Client WHERE ID=?",(ids,))
-        for i in id_finding:
-            if int(list(i)[0])==ids:
-                print("Good to go")
-                try:
+        id_finding=db_cursor.execute("SELECT ID FROM Client WHERE ID=(?)",(ids,))
+        # print(tuple(id_finding)!=())
+        pk=tuple(id_finding)
+        if pk!=():
+            print("good client is in our db")
+            try:
                     product=input("ProductName:")
                     weight=int(input("Weight:"))
                     today=date.today()
                     db_connection.execute("INSERT INTO Orders(Client_id,Product,Weight,date_time) VALUES (?,?,?,?);",(ids,product,weight,today))
                     db_connection.commit()
                     print("order placed")
-                except sqlite3.OperationalError:
+            except sqlite3.OperationalError:
                     print("Not placed the order")
+        else:
+            print("bad client is not in our db")
+            try:
+                    names=input("name:")
+                    phone=input("phone:")
+                    email=input("email:")
+                    # db_connection.execute("INSERT INTO Client VALUES (?, ?, ?);",(names, phone,email))
+                    db_connection.execute("INSERT INTO Client(Client_name,Phone,Email) VALUES (?,?,?);",(names,phone,email))
+                    db_connection.commit()
+                    print("-----now make the order---")
+                    product=input("ProductName:")
+                    weight=int(input("Weight:"))
+                    today=date.today()
+                    try:
+                        db_connection.execute("INSERT INTO Orders(Client_id,Product,Weight,date_time) VALUES (?,?,?,?);",(ids,product,weight,today))
+                        db_connection.commit()
+                        print("\n \n \n  order placed for missing id")
+                    except sqlite3.OperationalError:
+                        print("Not placed the order for missing id")
 
-            else:
-                print("not good to go")
+            except sqlite3.OperationalError:
+                    print("Something inside else is not good")
+
+
+
+
+
+
+
+
+            # if i!=None:
+            #     print("hi i am fixer")
+
+
+                # print("Good to go")
+                # try:
+                #     product=input("ProductName:")
+                #     weight=int(input("Weight:"))
+                #     today=date.today()
+                #     db_connection.execute("INSERT INTO Orders(Client_id,Product,Weight,date_time) VALUES (?,?,?,?);",(ids,product,weight,today))
+                #     db_connection.commit()
+                #     print("order placed")
+                # except sqlite3.OperationalError:
+                #     print("Not placed the order")
+                #
+                #
+                # print("Not good")
+
+            # else:
+            #     print("not good to go")
+
+
+
+
+                # try:
+                #     names=input("name:")
+                #     phone=input("phone:")
+                #     email=input("email:")
+                #     # db_connection.execute("INSERT INTO Client VALUES (?, ?, ?);",(names, phone,email))
+                #     db_connection.execute("INSERT INTO Client(Client_name,Phone,Email) VALUES (?,?,?);",(names,phone,email))
+                #     db_connection.commit()
+                #     print("-----now make the order---")
+                #     product=input("ProductName:")
+                #     weight=int(input("Weight:"))
+                #     today=date.today()
+                #     try:
+                #         db_connection.execute("INSERT INTO Orders(Client_id,Product,Weight,date_time) VALUES (?,?,?,?);",(ids,product,weight,today))
+                #         db_connection.commit()
+                #         print("order placed for missing id")
+                #     except sqlite3.OperationalError:
+                #         print("Not placed the order for missing id")
+                #
+                # except sqlite3.OperationalError:
+                #     print("Something inside else is not good"
+
+
 
     except sqlite3.OperationalError:
         print("problems")
+
+    menu()
 
 
 def Order_list():
