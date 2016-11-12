@@ -153,6 +153,7 @@ def Export():
           writer = csv.writer(f)
           writer.writerow(['Id','Client_id','Product_Name','Weight','Date'])
           writer.writerows(data)
+     print("Exported CSV file Created")
      menu()
 
 
