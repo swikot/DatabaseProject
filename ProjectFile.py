@@ -130,8 +130,9 @@ def Order_create():
 def Order_list():
     try:
         c_list= db_cursor.execute("SELECT * FROM Orders ORDER BY date_time DESC")
+        print("OID-CID-product-weight-date")
         for i in c_list:
-            print(list(i))
+            print(i[0]," ",i[1]," ",i[2]," ",i[3]," ",i[4])
     except sqlite3.OperationalError:
         print("Order list not created")
 
@@ -173,6 +174,7 @@ def menu():
     print("3:Order Create")
     print("4:Order List")
     print("5:Export Order")
+    print("0:Close ")
     print()
     print()
     p=int(input("Enter the number:"))
@@ -191,6 +193,8 @@ def menu():
     else:
         db_cursor.close()
         db_connection.close()
+        print("Application closed")
+        exit(0)
 
 
 menu()
