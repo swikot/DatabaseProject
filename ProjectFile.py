@@ -37,6 +37,7 @@ def Client_create():
 
 
     try:
+        print("client details")
         names=input("name:")
         phone=input("phone:")
         email=input("email:")

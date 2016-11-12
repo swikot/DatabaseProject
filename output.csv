@@ -1,3 +1,5 @@
 Id,Client_id,Product_Name,Weight,Date
 1,1,bed,43,2016-11-13
 2,3,chair,54,2016-11-13
+3,2,table,50,2016-11-13
+4,5,laptop,21,2016-11-13
