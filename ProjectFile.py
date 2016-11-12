@@ -31,9 +31,9 @@ def mail_serviece():
 
 
 
-def Client_create():
+def Client_create(i):
 
-
+    Mark=i
 
     try:
         names=input("name:")
@@ -50,8 +50,9 @@ def Client_create():
     except sqlite3.OperationalError:
         print("No Client Created")
 
+    if Mark==2:
+       menu()
 
-    menu()
 
 def Client_list():
     try:
@@ -84,12 +85,14 @@ def Order_create():
         else:
             print("bad client is not in our db")
             try:
-                    names=input("name:")
-                    phone=input("phone:")
-                    email=input("email:")
-                    # db_connection.execute("INSERT INTO Client VALUES (?, ?, ?);",(names, phone,email))
-                    db_connection.execute("INSERT INTO Client(Client_name,Phone,Email) VALUES (?,?,?);",(names,phone,email))
-                    db_connection.commit()
+                    # names=input("name:")
+                    # phone=input("phone:")
+                    # email=input("email:")
+                    # # db_connection.execute("INSERT INTO Client VALUES (?, ?, ?);",(names, phone,email))
+                    # db_connection.execute("INSERT INTO Client(Client_name,Phone,Email) VALUES (?,?,?);",(names,phone,email))
+                    # db_connection.commit()
+                    i=1
+                    Client_create(i)
                     print("-----now make the order---")
                     product=input("ProductName:")
                     weight=int(input("Weight:"))
@@ -111,50 +114,6 @@ def Order_create():
 
 
 
-            # if i!=None:
-            #     print("hi i am fixer")
-
-
-                # print("Good to go")
-                # try:
-                #     product=input("ProductName:")
-                #     weight=int(input("Weight:"))
-                #     today=date.today()
-                #     db_connection.execute("INSERT INTO Orders(Client_id,Product,Weight,date_time) VALUES (?,?,?,?);",(ids,product,weight,today))
-                #     db_connection.commit()
-                #     print("order placed")
-                # except sqlite3.OperationalError:
-                #     print("Not placed the order")
-                #
-                #
-                # print("Not good")
-
-            # else:
-            #     print("not good to go")
-
-
-
-
-                # try:
-                #     names=input("name:")
-                #     phone=input("phone:")
-                #     email=input("email:")
-                #     # db_connection.execute("INSERT INTO Client VALUES (?, ?, ?);",(names, phone,email))
-                #     db_connection.execute("INSERT INTO Client(Client_name,Phone,Email) VALUES (?,?,?);",(names,phone,email))
-                #     db_connection.commit()
-                #     print("-----now make the order---")
-                #     product=input("ProductName:")
-                #     weight=int(input("Weight:"))
-                #     today=date.today()
-                #     try:
-                #         db_connection.execute("INSERT INTO Orders(Client_id,Product,Weight,date_time) VALUES (?,?,?,?);",(ids,product,weight,today))
-                #         db_connection.commit()
-                #         print("order placed for missing id")
-                #     except sqlite3.OperationalError:
-                #         print("Not placed the order for missing id")
-                #
-                # except sqlite3.OperationalError:
-                #     print("Something inside else is not good"
 
 
 
@@ -179,16 +138,24 @@ def Export():
 
     #to export as csv file
 
-    p=int(input("Give the ID of the Client for CSV Report"))
 
-    with open("wub.csv", "wb") as write_file:
 
-          for row in db_cursor.execute("SELECT * FROM Orders WHERE ID=?",(p,)):
-                 writeRow = " ".join([str(i) for i in row])
-                 write_file.write(writeRow.encode())
+    # with open("wub.csv", "wb") as write_file:
+    #
+    #       for row in db_cursor.execute("SELECT * FROM Orders "):
+    #              writeRow = " ".join([str(i) for i in row])
+    #              write_file.write(writeRow.encode())
+    #
+    #       print("File Created")
 
-          print("File Created")
-    menu()
+     data=db_cursor.execute("SELECT * FROM Orders")
+     with open('output.csv', 'w') as f:
+          writer = csv.writer(f)
+          writer.writerow(['Id','Client_id','Product_Name','Weight','Date'])
+          writer.writerows(data)
+     menu()
+
+
 
 
 
@@ -202,10 +169,12 @@ def menu():
     print("4:Order List")
     print("5:Export Order")
     print()
-    print("Enter the number")
-    p=int(input())
+    print()
+    p=int(input("Enter the number:"))
     if p==1:
-       Client_create()
+       i=2
+
+       Client_create(i)
     elif p==2:
        Client_list()
     elif p==3:
