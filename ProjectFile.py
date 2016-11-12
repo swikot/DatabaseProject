@@ -2,6 +2,8 @@ __author__ = 'snow'
 
 
 import sqlite3
+import csv
+
 from datetime import date, datetime
 
 db_connection=sqlite3.connect("FLAPPY.db",detect_types=sqlite3.PARSE_DECLTYPES|sqlite3.PARSE_COLNAMES)
@@ -21,6 +23,9 @@ try:
 except sqlite3.OperationalError:
     print("order table not created")
 
+
+def mail_serviece():
+    pass
 
 
 
@@ -170,7 +175,20 @@ def Order_list():
     menu()
 
 def Export():
-    print("Export")
+
+
+    #to export as csv file
+
+    p=int(input("Give the ID of the Client for CSV Report"))
+
+    with open("wub.csv", "wb") as write_file:
+
+          for row in db_cursor.execute("SELECT * FROM Orders WHERE ID=?",(p,)):
+                 writeRow = " ".join([str(i) for i in row])
+                 write_file.write(writeRow.encode())
+
+          print("File Created")
+    menu()
 
 
 
@@ -194,8 +212,11 @@ def menu():
        Order_create()
     elif p==4:
        Order_list()
-    else:
+    elif p==5:
        Export()
+    else:
+        db_cursor.close()
+        db_connection.close()
 
 
 menu()
