@@ -8,18 +8,18 @@ from datetime import date, datetime
 
 db_connection=sqlite3.connect("FLAPPY.db",detect_types=sqlite3.PARSE_DECLTYPES|sqlite3.PARSE_COLNAMES)
 db_cursor=db_connection.cursor()
-
+print("WELCOME TO OUR COURIER SERVIECE")
 try:
     db_connection.execute("CREATE TABLE IF NOT EXISTS Client(ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL ,Client_name TEXT,Phone TEXT,Email TEXT  )")
     db_connection.commit()
-    print("table created")
+    #print("table created")
 except sqlite3.OperationalError:
     print(" Client table not created")
 
 try:
     db_connection.execute("CREATE TABLE IF NOT EXISTS Orders(ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL ,Client_id INTEGER NOT NULL,Product TEXT ,Weight INTEGER,date_time DATE)")
     db_connection.commit()
-    print("table created")
+    #print("table created")
 except sqlite3.OperationalError:
     print("order table not created")
 
@@ -31,9 +31,10 @@ def mail_serviece():
 
 
 
-def Client_create(i):
+def Client_create():
 
-    Mark=i
+
+
 
     try:
         names=input("name:")
@@ -50,15 +51,16 @@ def Client_create(i):
     except sqlite3.OperationalError:
         print("No Client Created")
 
-    if Mark==2:
-       menu()
 
+    menu()
 
 def Client_list():
     try:
         c_list= db_cursor.execute("SELECT * FROM Client ORDER BY Client_name")
+        print("-id--name---------phone------------email")
         for i in c_list:
-            print(list(i))
+            print(i[0]," ",i[1]," ",i[2]," ",i[3])
+        print("------------------------------------")
     except sqlite3.OperationalError:
         print("Client list not created")
 
@@ -85,14 +87,16 @@ def Order_create():
         else:
             print("bad client is not in our db")
             try:
-                    # names=input("name:")
-                    # phone=input("phone:")
-                    # email=input("email:")
-                    # # db_connection.execute("INSERT INTO Client VALUES (?, ?, ?);",(names, phone,email))
-                    # db_connection.execute("INSERT INTO Client(Client_name,Phone,Email) VALUES (?,?,?);",(names,phone,email))
-                    # db_connection.commit()
-                    i=1
-                    Client_create(i)
+                    names=input("name:")
+                    phone=input("phone:")
+                    email=input("email:")
+                    # db_connection.execute("INSERT INTO Client VALUES (?, ?, ?);",(names, phone,email))
+                    db_connection.execute("INSERT INTO Client(ID,Client_name,Phone,Email) VALUES (?,?,?,?);",(ids,names,phone,email))
+                    db_connection.commit()
+                    result=db_cursor.execute("SELECT ID FROM Client WHERE Email=(?);",(email,))
+                    for i in result:
+                          print("Welcome to our courier company. Client Id is {{",list(i)[0] ," }}" )
+
                     print("-----now make the order---")
                     product=input("ProductName:")
                     weight=int(input("Weight:"))
@@ -173,9 +177,9 @@ def menu():
     print()
     p=int(input("Enter the number:"))
     if p==1:
-       i=2
 
-       Client_create(i)
+
+       Client_create()
     elif p==2:
        Client_list()
     elif p==3:

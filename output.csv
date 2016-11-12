@@ -1,1 +1,4 @@
-Id,Client_id,Product_Name,Weight,Date1,1,chair,45,2016-11-122,2,table,50,2016-11-123,3,Cloths,23,2016-11-12
+Id,Client_id,Product_Name,Weight,Date
+1,1,chair,45,2016-11-12
+2,2,table,50,2016-11-12
+3,3,Cloths,23,2016-11-12
