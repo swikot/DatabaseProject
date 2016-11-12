@@ -57,6 +57,7 @@ def Client_create():
 def Client_list():
     try:
         c_list= db_cursor.execute("SELECT * FROM Client ORDER BY Client_name")
+        print("-----clientlist------")
         print("-id--name---------phone------------email")
         for i in c_list:
             print(i[0]," ",i[1]," ",i[2]," ",i[3])
@@ -74,7 +75,7 @@ def Order_create():
         # print(tuple(id_finding)!=())
         pk=tuple(id_finding)
         if pk!=():
-            print("good client is in our db")
+            print(" client is in our db,give order's details")
             try:
                     product=input("ProductName:")
                     weight=int(input("Weight:"))
@@ -85,7 +86,7 @@ def Order_create():
             except sqlite3.OperationalError:
                     print("Not placed the order")
         else:
-            print("bad client is not in our db")
+            print("client is not in our db,give client's details")
             try:
                     names=input("name:")
                     phone=input("phone:")
@@ -130,9 +131,11 @@ def Order_create():
 def Order_list():
     try:
         c_list= db_cursor.execute("SELECT * FROM Orders ORDER BY date_time DESC")
+        print("orderlist")
         print("OID-CID-product-weight-date")
         for i in c_list:
             print(i[0]," ",i[1]," ",i[2]," ",i[3]," ",i[4])
+        print("-----------------------------------")
     except sqlite3.OperationalError:
         print("Order list not created")
 
@@ -174,7 +177,7 @@ def menu():
     print("3:Order Create")
     print("4:Order List")
     print("5:Export Order")
-    print("0:Close ")
+    print("press 1-5 for selecting an option")
     print()
     print()
     p=int(input("Enter the number:"))
@@ -193,8 +196,9 @@ def menu():
     else:
         db_cursor.close()
         db_connection.close()
-        print("Application closed")
-        exit(0)
+
+
+
 
 
 menu()
