@@ -62,7 +62,8 @@ def Client_list():
         print("-----clientlist------")
         print("-id--name---------phone------------email")
         for i in c_list:
-            print(i[0]," ",i[1]," ",i[2]," ",i[3])
+           # print(i[0]," ",i[1]," ",i[2]," ",i[3])
+            print(list(i))
         print("------------------------------------")
     except sqlite3.OperationalError:
         print("Client list not created")
@@ -137,6 +138,7 @@ def Order_list():
         print("OID-CID-product-weight-date")
         for i in c_list:
             print(i[0]," ",i[1]," ",i[2]," ",i[3]," ",i[4])
+
         print("-----------------------------------")
     except sqlite3.OperationalError:
         print("Order list not created")
