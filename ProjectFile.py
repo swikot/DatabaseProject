@@ -1,4 +1,4 @@
-__author__ = 'snow'
+__author__ = 'swikot'
 # delete the existing database and CSV file and run program again
 
 
