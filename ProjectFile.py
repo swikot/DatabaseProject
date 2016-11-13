@@ -1,4 +1,5 @@
 __author__ = 'snow'
+# delete the existing database and CSV file and run program again
 
 
 import sqlite3
@@ -181,7 +182,7 @@ def menu():
     print("press 1-5 for selecting an option")
     print()
     print()
-    p=int(input("Enter the number:"))
+    p=int(input("Press the number:"))
     if p==1:
 
 
